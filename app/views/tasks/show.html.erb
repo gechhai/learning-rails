@@ -1,0 +1,43 @@
+<%= render "nav" %>
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="card shadow-lg">
+        <!-- Card Header -->
+        <div class="card-header bg-dark text-white d-flex align-items-center justify-content-between">
+          <h4 class="mb-0">Task Details</h4>
+          <span class="badge rounded-pill bg-light text-dark">
+            Task #<%= @task.id %>
+          </span>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+          <!-- Task Name and Description -->
+          <h5 class="card-title"><strong>Task Name:</strong> <%= @task.name %></h5>
+          <p class="card-text"><strong>Description:</strong> <%= @task.description.presence || "No description provided." %></p>
+          <!-- Category and Status with Badges -->
+          <div class="">
+            <p class=""><strong>Category:</strong> <span class=""><%= @task.category&.name || "Uncategorized" %></span></p>
+            <p><strong>Status:</strong>
+              <span class="badge rounded-pill bg-<%= status_color(@task.status) %>">
+                <%= @task.status.humanize %>
+              </span>
+            </p>
+          </div>
+          <!-- Optional Notice Message -->
+          <% if notice %>
+            <div class="alert alert-success mt-4 mb-0" role="alert">
+              <%= notice %>
+            </div>
+          <% end %>
+          <!-- Action Buttons -->
+          <div class="d-flex justify-content-end mt-4">
+            <%= link_to "Edit Task", edit_task_path(@task), class: "btn btn-outline-primary me-3 px-4" %>
+            <%= link_to "Back to Tasks", tasks_path, class: "btn btn-outline-secondary me-3 px-4" %>
+            <%= button_to "Delete Task", @task, method: :delete, data: { confirm: "Are you sure you want to delete this task?" }, class: "btn btn-outline-danger px-4" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

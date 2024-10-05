@@ -1,0 +1,61 @@
+<% content_for :title, "Tasks" %>
+<%= render "nav" %>
+
+<div class="container my-5">
+  <% if notice %>
+    <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
+
+
+  <div id="tasks" class="card shadow-lg p-4 mx-auto" style="max-width: 1000px;">
+    <div class="d-flex flex-row justify-content-end align-items-center">
+        <label class="me-2">Sort by Status:</label>
+        <%= form_with url: tasks_path, method: :get, local: true, class: "d-flex" do %>
+          <%= select_tag :order, options_for_select([['Ascending', 'asc'], ['Descending', 'desc']], params[:order]), class: "form-select me-2", onchange: "this.form.submit();" %>
+        <% end %>
+      </div>
+    <div class="card-body">
+      <h3 class="card-title text-center mb-4">Task List</h3>
+
+      <div class="table-responsive">
+        <table class="table table-hover table-striped align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Category</th>
+              <th scope="col">Status</th>
+              <th scope="col" class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @tasks.each_with_index do |task, index| %>
+              <tr id="<%= dom_id(task) %>">
+                <td class="fw-bold"><%= task.name %></td>
+                <td><%= truncate(task.description, length: 50) %></td>
+                <td><%= task.category&.name || "Uncategorized" %></td>
+                <td>
+                  <span class="badge rounded-pill bg-<%= status_color(task.status) %>">
+                    <%= task.status.humanize %>
+                  </span>
+                </td>
+                <td class="d-flex flex-row justify-content-center">
+                  <%= link_to "Show", task, class: "btn btn-info btn-sm me-2" %>
+                  <%= link_to "Edit", edit_task_path(task), class: "btn btn-secondary btn-sm me-2" %>
+                  <%= button_to "Delete", task, method: :delete, data: { confirm: "Are you sure you want to delete this task?" }, class: "btn btn-danger btn-sm me-2" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex justify-content-center mt-4">
+        <%= link_to "Add New Task", new_task_path, class: "btn btn-success btn-lg px-5 shadow" %>
+      </div>
+    </div>
+  </div>
+</div>

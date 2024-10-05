@@ -1,0 +1,34 @@
+<%= render "nav" %>
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="card shadow-lg">
+        <!-- Card Header -->
+        <div class="card-header bg-dark text-white d-flex align-items-center justify-content-between">
+          <h4 class="mb-0">Category Details</h4>
+          <span class="badge rounded-pill bg-light text-dark">
+            Categories #<%= @category.id %>
+          </span>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+          <!-- Category Name and Description -->
+          <h5 class="card-title"><strong>Category Name:</strong> <%= @category.name %></h5>
+          <p class="card-text"><strong>Description:</strong> <%= @category.description.presence || "No description provided." %></p>
+          <!-- Optional Notice Message -->
+          <% if notice %>
+            <div class="alert alert-success mt-4 mb-0" role="alert">
+              <%= notice %>
+            </div>
+          <% end %>
+          <!-- Action Buttons -->
+          <div class="d-flex justify-content-end mt-4">
+            <%= link_to "Edit Category", edit_category_path(@category), class: "btn btn-outline-primary me-3 px-4" %>
+            <%= link_to "Back to Categories", categories_path, class: "btn btn-outline-secondary me-3 px-4" %>
+            <%= button_to "Delete Category", @category, method: :delete, data: { confirm: "Are you sure you want to delete this Category?" }, class: "btn btn-outline-danger px-4" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
