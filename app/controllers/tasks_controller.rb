@@ -5,12 +5,23 @@ class TasksController < ApplicationController
   def index
     @tasks = Task.all
     
+    sort_by = params[:sort_by].presence || "status" # Default to sorting by 'status'
+
     # Retrieve sorting parameters from the request
     sort_order = params[:order] == "desc" ? :desc : :asc
 
-    # Sort tasks based on the enum status, using Rails order and sorting method
-    @tasks = Task.order(status: sort_order)
+    case sort_by 
+    when "status"
+      # Sort tasks based on the enum status, using Rails order and sorting method
+      @tasks = Task.order(status: sort_order) 
+    when "description"
+      @tasks = Task.order(description: sort_order)
+    else
+      @tasks = Task.order(status: sort_order) 
+    end
   end
+
+
 
   # GET /tasks/1 or /tasks/1.json
   def show
